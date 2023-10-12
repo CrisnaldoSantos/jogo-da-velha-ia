@@ -7,7 +7,7 @@ function Board() {
   const { board } = useGameContext();
 
   return (
-    <div>
+    <div className="mb-8">
       {board.map((row, rowIndex) => (
         <div key={rowIndex} className="flex pb-1 gap-1">
           {row.map((cell, cellIndex) => (

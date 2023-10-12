@@ -3,7 +3,7 @@ import { produce } from "immer";
 import { GameActionTypes } from "./actions";
 import { checkAvaliablePiece } from "@/core/rules/check-avaliable-piece";
 import { getOpponentPlayer } from "@/core/rules/get-opponent-player";
-import { checkWinner } from "@/core/rules/check-winner";
+import { parsePlayerToNumeric } from "@/core/rules/parse-player-to-numeric";
 
 export type PlayerSymbol = "X" | "O";
 
@@ -15,8 +15,10 @@ export type Score = {
   defeats: number;
 };
 
+export type boardNumericEntry = -1 | 0 | 1;
+
 export interface GameState {
-  board: string[][];
+  board: boardNumericEntry[][];
   status: GameStatus;
   humanSymbol: PlayerSymbol;
   currentPlayer: PlayerSymbol;
@@ -31,27 +33,32 @@ export function gameReducer(state: GameState, action: any) {
       });
     case GameActionTypes.MARK_A_PIECE: {
       const { line, column } = action.payload;
-      console.log("marcou", line, column);
       const isAvaliable = checkAvaliablePiece(state.board, line, column);
 
       if (!isAvaliable) {
         return state;
       }
 
-      const winner = checkWinner(
-        state.board,
-        state.currentPlayer,
-        line,
-        column
-      );
+      return produce(state, (draft) => {
+        draft.board[line][column] = parsePlayerToNumeric(state.currentPlayer);
+        draft.currentPlayer = getOpponentPlayer(state.currentPlayer);
+      });
+    }
+    case GameActionTypes.DEFINE_A_WINNER: {
+      const { winner } = action.payload;
 
-      if (winner) {
-        console.log("ganhou:", state.currentPlayer);
-      }
+      const isVictory = winner === state.humanSymbol;
+
+      const victoryIncrement = isVictory ? 1 : 0;
+      const defeatIncrement = isVictory ? 0 : 1;
 
       return produce(state, (draft) => {
-        draft.board[line][column] = state.currentPlayer;
-        draft.currentPlayer = getOpponentPlayer(state.currentPlayer);
+        draft.status = "FINISHED";
+        draft.score = {
+          victories: state.score.victories + victoryIncrement,
+          draws: state.score.draws,
+          defeats: state.score.defeats + defeatIncrement,
+        };
       });
     }
     default:

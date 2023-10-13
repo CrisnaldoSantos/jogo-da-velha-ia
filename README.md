@@ -36,6 +36,10 @@ pnpm dev
 
 Crie seu arquivo .env.local e adicione sua chave de api OPENAI_API_KEY , conforme no .env.example
 
+## Demo
+
+https://github.com/CrisnaldoSantos/jogo-da-velha-ia/assets/45441190/d8c13a42-1997-4d03-af15-0612354064e3
+
 ## Screenshots
 
 <p align="center">

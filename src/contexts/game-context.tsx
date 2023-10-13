@@ -33,6 +33,7 @@ interface GameContextType {
   humanSymbol: PlayerSymbol;
   currentPlayer: PlayerSymbol;
   score: Score;
+  winnerText: string;
   markAPiece: (line: number, column: number) => void;
   startGame: () => void;
   restartGame: () => void;
@@ -50,6 +51,7 @@ export function GameContextProvider({ children }: GameContextProviderProps) {
     status: "NEW",
     currentPlayer: "X",
     humanSymbol: generateRandomSymbol(),
+    winnerText: "",
     score: {
       victories: 0,
       draws: 0,
@@ -57,7 +59,8 @@ export function GameContextProvider({ children }: GameContextProviderProps) {
     },
   } as GameState);
 
-  const { board, status, currentPlayer, humanSymbol, score } = gameState;
+  const { board, status, currentPlayer, humanSymbol, score, winnerText } =
+    gameState;
 
   useEffect(() => {
     const winner = checkWinner(board);
@@ -90,6 +93,7 @@ export function GameContextProvider({ children }: GameContextProviderProps) {
         currentPlayer,
         humanSymbol,
         score,
+        winnerText,
         markAPiece,
         startGame,
         restartGame,

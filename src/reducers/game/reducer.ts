@@ -25,6 +25,7 @@ export interface GameState {
   humanSymbol: PlayerSymbol;
   currentPlayer: PlayerSymbol;
   score: Score;
+  winnerText: string;
 }
 
 export function gameReducer(state: GameState, action: any) {
@@ -56,6 +57,7 @@ export function gameReducer(state: GameState, action: any) {
 
       return produce(state, (draft) => {
         draft.status = "FINISHED";
+        draft.winnerText = isVictory ? "Você venceu!" : "A IA venceu!";
         draft.score = {
           victories: state.score.victories + victoryIncrement,
           draws: state.score.draws,
@@ -66,6 +68,7 @@ export function gameReducer(state: GameState, action: any) {
     case GameActionTypes.DEFINE_A_DRAW: {
       return produce(state, (draft) => {
         draft.status = "FINISHED";
+        draft.winnerText = "Deu empate!";
         draft.score = {
           victories: state.score.victories,
           draws: state.score.draws + 1,

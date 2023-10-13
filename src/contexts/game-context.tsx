@@ -3,6 +3,7 @@
 import {
   createContext,
   ReactNode,
+  useCallback,
   useContext,
   useEffect,
   useReducer,
@@ -26,6 +27,7 @@ import {
 import { checkWinner } from "@/core/rules/check-winner";
 import { checkBoardIsFull } from "@/core/rules/check-board-is-full";
 import { generateEmptyBoard } from "@/core/rules/generate-empty-board";
+import { getIAPieceSelection } from "@/services/get-ia-piece-selection";
 
 interface GameContextType {
   board: boardNumericEntry[][];
@@ -73,6 +75,18 @@ export function GameContextProvider({ children }: GameContextProviderProps) {
       dispatch(defineADrawAction());
     }
   }, [board]);
+
+  const queryIA = useCallback(async () => {
+    if (status === "IN_PROGRESS" && currentPlayer !== humanSymbol) {
+      const iaResponse = await getIAPieceSelection(board, humanSymbol);
+      const { line, column } = iaResponse;
+      dispatch(markAPieceAction(line, column));
+    }
+  }, [board, currentPlayer, humanSymbol, status]);
+
+  useEffect(() => {
+    queryIA();
+  }, [queryIA]);
 
   function markAPiece(line: number, column: number) {
     dispatch(markAPieceAction(line, column));

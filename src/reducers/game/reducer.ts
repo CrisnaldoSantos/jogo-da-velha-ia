@@ -42,6 +42,10 @@ export function gameReducer(state: GameState, action: any) {
         return state;
       }
 
+      if (state.status !== "IN_PROGRESS") {
+        return state;
+      }
+
       return produce(state, (draft) => {
         draft.board[line][column] = parsePlayerToNumeric(state.currentPlayer);
         draft.currentPlayer = getOpponentPlayer(state.currentPlayer);

@@ -70,9 +70,10 @@ export function GameContextProvider({ children }: GameContextProviderProps) {
     if (winner) {
       console.log(winner);
       dispatch(defineAWinnerAction(winner));
-    }
-    if (fullBoard) {
-      dispatch(defineADrawAction());
+    } else {
+      if (fullBoard) {
+        dispatch(defineADrawAction());
+      }
     }
   }, [board]);
 

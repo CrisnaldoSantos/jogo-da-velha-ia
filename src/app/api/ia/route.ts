@@ -28,7 +28,7 @@ export async function POST(req: NextRequest) {
       },
     ],
     model: "gpt-3.5-turbo",
-    temperature: 0,
+    temperature: 0.4,
   });
 
   const strignifyResponse = chatCompletion.choices[0].message.content;
@@ -36,6 +36,6 @@ export async function POST(req: NextRequest) {
     const response = JSON.parse(strignifyResponse);
     return NextResponse.json(response);
   }
-
+  console.log("Ocorreu um erro", chatCompletion.choices[0]);
   return NextResponse.json({});
 }

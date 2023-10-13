@@ -1,36 +1,51 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<h1 align="center">
+    <img src=".github/assets/ia.png" width="50px">
+    <br/>Jogo Da Velha IA
+</h1>
 
-## Getting Started
+<p align="center">
+  <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/CrisnaldoSantos/jogo-da-velha-ia?color=3b82f6"/>
+  <a href="https://www.crisnaldocarvalho.com.br">
+    <img alt="Made by Crisnaldo" src="https://img.shields.io/badge/made%20by-Crisnaldo Carvalho-3b82f6">
+  </a>
+  <img src="https://img.shields.io/github/languages/top/CrisnaldoSantos/jogo-da-velha-ia?color=3b82f6">
+  <img src="https://img.shields.io/github/package-json/v/CrisnaldoSantos/jogo-da-velha-ia/master?color=3b82f6">
+</p>
 
-First, run the development server:
+## Descrição:
+
+Aplicação front-end desenvolvida com NextJS 13, que implementa um jogo da velha, ao qual o usuário joga contra uma inteligência artificial.
+
+Os principais conceitos e regras foram isolados em um pacote core/rules em pequanas funções testáveis, e seus retornos utilizados em lógicas mais complexas. O estado foi compartilhado por contexto, e sua implementação ocorreu por meio de reducer e actions, uma vez que ações do jogo impactam em muitos estados, essa abordagem permite a modificação clara de estados compostos, para facilitar ainda mais essa manipulação foi utilizada a biblioteca immer.
+
+Com as regras e funcionamentos definidos foi inserido uma integração com a OpenAI, para que a partir do quadro do jogo, a IA retornasse o seu passo, garantindo assim a iteratividade do jogo.
+
+## Executando Localmente
+
+Node 18.x
+
+Dentro do diretório execute os comandos abaixo
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+```bash
+pnpm dev
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Crie seu arquivo .env.local e adicione sua chave de api OPENAI_API_KEY , conforme no .env.example
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Screenshots
 
-## Learn More
+<p align="center">
+    <img src=".github/assets/screen-01.png" width="700px">
+</p>
 
-To learn more about Next.js, take a look at the following resources:
+<p align="center">
+    <img src=".github/assets/screen-02.png" width="700px">
+</p>
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+<p align="center">
+    <img src=".github/assets/screen-03.png" width="700px">
+</p>

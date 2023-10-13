@@ -9,15 +9,18 @@ interface PieceProps {
   line: number;
 }
 export function Piece({ value, line, column }: PieceProps) {
-  const { markAPiece, currentPlayer, humanSymbol } = useGameContext();
+  const { markAPiece, currentPlayer, humanSymbol, status } = useGameContext();
 
+  const gameInProgress = status === "IN_PROGRESS";
   //TODO Enable after IA implementation
   //const iaRound = currentPlayer !== humanSymbol;
 
   const handleMark = () => {
-    //if (iaRound) return;
+    if (gameInProgress) {
+      //if (iaRound) return;
 
-    markAPiece(line, column);
+      markAPiece(line, column);
+    }
   };
 
   const playerLabel = parseNumericToPlayer(value);

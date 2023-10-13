@@ -16,9 +16,16 @@ import {
   Score,
 } from "@/reducers/game/reducer";
 import { generateRandomSymbol } from "@/core/rules/generate-random-symbol";
-import { defineAWinnerAction, markAPieceAction } from "@/reducers/game/actions";
+import {
+  defineADrawAction,
+  defineAWinnerAction,
+  markAPieceAction,
+  restartGameAction,
+  startGameAction,
+} from "@/reducers/game/actions";
 import { checkWinner } from "@/core/rules/check-winner";
 import { checkBoardIsFull } from "@/core/rules/check-board-is-full";
+import { generateEmptyBoard } from "@/core/rules/generate-empty-board";
 
 interface GameContextType {
   board: boardNumericEntry[][];
@@ -27,6 +34,8 @@ interface GameContextType {
   currentPlayer: PlayerSymbol;
   score: Score;
   markAPiece: (line: number, column: number) => void;
+  startGame: () => void;
+  restartGame: () => void;
 }
 
 export const GameContext = createContext({} as GameContextType);
@@ -37,11 +46,7 @@ interface GameContextProviderProps {
 
 export function GameContextProvider({ children }: GameContextProviderProps) {
   const [gameState, dispatch] = useReducer(gameReducer, {
-    board: [
-      [0, 0, 0],
-      [0, 0, 0],
-      [0, 0, 0],
-    ],
+    board: generateEmptyBoard(),
     status: "NEW",
     currentPlayer: "X",
     humanSymbol: generateRandomSymbol(),
@@ -62,16 +67,33 @@ export function GameContextProvider({ children }: GameContextProviderProps) {
       dispatch(defineAWinnerAction(winner));
     }
     if (fullBoard) {
-      console.log("Dispara Ação de empate");
+      dispatch(defineADrawAction());
     }
   }, [board]);
 
   function markAPiece(line: number, column: number) {
     dispatch(markAPieceAction(line, column));
   }
+
+  function startGame() {
+    dispatch(startGameAction());
+  }
+
+  function restartGame() {
+    dispatch(restartGameAction());
+  }
   return (
     <GameContext.Provider
-      value={{ board, status, currentPlayer, humanSymbol, score, markAPiece }}
+      value={{
+        board,
+        status,
+        currentPlayer,
+        humanSymbol,
+        score,
+        markAPiece,
+        startGame,
+        restartGame,
+      }}
     >
       {children}
     </GameContext.Provider>

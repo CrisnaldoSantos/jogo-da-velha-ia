@@ -1,9 +1,11 @@
 "use client";
-import { produce } from "immer";
+import { current, produce } from "immer";
 import { GameActionTypes } from "./actions";
 import { checkAvaliablePiece } from "@/core/rules/check-avaliable-piece";
 import { getOpponentPlayer } from "@/core/rules/get-opponent-player";
 import { parsePlayerToNumeric } from "@/core/rules/parse-player-to-numeric";
+import { generateEmptyBoard } from "@/core/rules/generate-empty-board";
+import { generateRandomSymbol } from "@/core/rules/generate-random-symbol";
 
 export type PlayerSymbol = "X" | "O";
 
@@ -59,6 +61,24 @@ export function gameReducer(state: GameState, action: any) {
           draws: state.score.draws,
           defeats: state.score.defeats + defeatIncrement,
         };
+      });
+    }
+    case GameActionTypes.DEFINE_A_DRAW: {
+      return produce(state, (draft) => {
+        draft.status = "FINISHED";
+        draft.score = {
+          victories: state.score.victories,
+          draws: state.score.draws + 1,
+          defeats: state.score.defeats,
+        };
+      });
+    }
+    case GameActionTypes.RESTART_GAME: {
+      return produce(state, (draft) => {
+        draft.board = generateEmptyBoard();
+        draft.status = "NEW";
+        draft.currentPlayer = "X";
+        draft.humanSymbol = generateRandomSymbol();
       });
     }
     default:

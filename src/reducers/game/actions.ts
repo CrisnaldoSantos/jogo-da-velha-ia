@@ -6,6 +6,7 @@ export enum GameActionTypes {
   START_GAME = "START_GAME",
   MARK_A_PIECE = "MARK_A_PIECE",
   DEFINE_A_WINNER = "DEFINE_A_WINNER",
+  DEFINE_A_DRAW = "DEFINE_A_DRAW",
   RESTART_GAME = "RESTART_GAME",
 }
 
@@ -31,5 +32,17 @@ export function defineAWinnerAction(winner: PlayerSymbol) {
     payload: {
       winner,
     },
+  };
+}
+
+export function defineADrawAction() {
+  return {
+    type: GameActionTypes.DEFINE_A_DRAW,
+  };
+}
+
+export function restartGameAction() {
+  return {
+    type: GameActionTypes.RESTART_GAME,
   };
 }
